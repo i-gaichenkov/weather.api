@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Converters;
+using Swashbuckle.AspNetCore.Swagger;
 using Weather.Logic.ForecastProviders;
 using Weather.Logic.ForecastProviders.OpenWeatherMap;
 
@@ -24,6 +25,11 @@ namespace Weather.Api
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddJsonOptions(opt => opt.SerializerSettings.Converters.Add(new StringEnumConverter()));
+            
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Weather API", Version = "v1" });
+            });
             
             services.Configure<OpenWeatherOptions>(Configuration.GetSection("OpenWeather"));
 
@@ -46,6 +52,12 @@ namespace Weather.Api
 
             app.UseHttpsRedirection();
             app.UseMvc();
+            app.UseSwagger();
+            
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Weather API V1");
+            });
         }
     }
 }
