@@ -80,7 +80,7 @@ namespace Weather.Logic.ForecastProviders.OpenWeatherMap
         private static DayForecast ToDayForecast(ForecastResponse response)
         {
             return new DayForecast(ConvertUnixTimeToDateTime(response.UnixTime), response.Main.Temperature, response.Main.Humidity, 
-                response.Weather.Select(weather => new WeatherInfo(weather.Main, weather.Description)).ToArray());
+                response.Weather.Select(weather => new WeatherInfo(weather.Id, weather.Main, weather.Description)).ToArray());
         }
 
         private static DateTime ConvertUnixTimeToDateTime(long unixTime)
