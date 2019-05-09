@@ -12,6 +12,8 @@ namespace Weather.Logic.ForecastProviders.OpenWeatherMap.Dto
 
         public IReadOnlyCollection<WeatherResponse> Weather { get; set; }
 
+        public WindResponse Wind { get; set; }
+        
         [JsonProperty("dt_txt")]
         public string TimeStampString { get; set; }
     }

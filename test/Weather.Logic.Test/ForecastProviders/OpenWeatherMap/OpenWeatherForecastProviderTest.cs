@@ -32,12 +32,6 @@ namespace Weather.Logic.Test.ForecastProviders.OpenWeatherMap
             Assert.Equal(new DateTime(2017, 02, 16, 12, 00, 00, DateTimeKind.Utc), forecast.DailyForecasts.First().DateTime);
             Assert.Equal(75, forecast.DailyForecasts.First().Humidity);
             Assert.Equal(286.67, forecast.DailyForecasts.First().Temperature);
-            
-            Assert.Collection(forecast.DailyForecasts.First().Weather, weather =>
-                {
-                    Assert.Equal(WeatherCondition.Clear, weather.WeatherCondition);
-                    Assert.Equal("clear sky", weather.WeatherDescription);
-                });
         }
 
         [Fact]

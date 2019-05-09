@@ -50,6 +50,7 @@ namespace Weather.Api
                 app.UseHsts();
             }
 
+            app.UseCors(cors => cors.AllowAnyOrigin().WithMethods("GET"));
             app.UseHttpsRedirection();
             app.UseMvc();
             app.UseSwagger();

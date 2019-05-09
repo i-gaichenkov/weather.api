@@ -32,6 +32,8 @@ namespace Weather.Logic.IntegrationTest.ForecastProviders.OpenWeatherMap
             Assert.Equal("London", forecast.City.Name);
             Assert.Equal("GB", forecast.City.CountryCode.Value);
             Assert.NotEmpty(forecast.DailyForecasts);
+            Assert.NotNull(forecast.CurrentWeather);
+            Assert.Equal(4, forecast.DailyForecasts.Count);
         }
 
         [Fact]
@@ -48,6 +50,8 @@ namespace Weather.Logic.IntegrationTest.ForecastProviders.OpenWeatherMap
             Assert.Equal("Munich", forecast.City.Name);
             Assert.Equal("DE", forecast.City.CountryCode.Value);
             Assert.NotEmpty(forecast.DailyForecasts);
+            Assert.NotNull(forecast.CurrentWeather);
+            Assert.Equal(4, forecast.DailyForecasts.Count);
         }
         
         [Fact]
@@ -64,6 +68,8 @@ namespace Weather.Logic.IntegrationTest.ForecastProviders.OpenWeatherMap
             Assert.Equal("Munich", forecast.City.Name);
             Assert.Equal("DE", forecast.City.CountryCode.Value);
             Assert.NotEmpty(forecast.DailyForecasts);
+            Assert.NotNull(forecast.CurrentWeather);
+            Assert.Equal(4, forecast.DailyForecasts.Count);
         }
 
         private OpenWeatherForecastProvider CreateOpenWeatherForecastProvider()

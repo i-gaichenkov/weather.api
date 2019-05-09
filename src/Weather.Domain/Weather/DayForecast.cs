@@ -9,20 +9,28 @@ namespace Weather.Domain.Weather
         
         public double Temperature { get; }
 
-        public int Humidity { get; }
+        public double Humidity { get; }
 
-        public IReadOnlyCollection<WeatherInfo> Weather { get; }
+        public double WindSpeed { get; }
+        
+        public WeatherInfo Weather { get; }
 
-        public DayForecast(DateTime dateTime, double temperature, int humidity, IReadOnlyCollection<WeatherInfo> weather)
+        public DayForecast(DateTime dateTime, double temperature, double humidity, double windSpeed, WeatherInfo weather)
         {
-            if (humidity <= 0)
+            if (humidity < 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(humidity));
             }
-            
+
+            if (windSpeed < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(windSpeed));
+            }
+
             DateTime = dateTime;
             Temperature = temperature;
             Humidity = humidity;
+            WindSpeed = windSpeed;
             Weather = weather ?? throw new ArgumentNullException(nameof(weather));
         }
     }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -72,15 +73,32 @@ namespace Weather.Logic.ForecastProviders.OpenWeatherMap
 
         private static Forecast ConvertResponse(OpenWeatherMapResponse response)
         {
+            var dayForecasts = response.List.GroupBy(item => ConvertUnixTimeToDateTime(item.UnixTime).Date)
+                .Select(gr => ToDayForecast(gr.Key, gr))
+                .ToList();
+
+            var firstDayForecast = dayForecasts.First();
+            dayForecasts.RemoveAt(0);
+
+            DayForecast currentWeather = new DayForecast(firstDayForecast.DateTime, firstDayForecast.Temperature,
+                firstDayForecast.Humidity, firstDayForecast.WindSpeed,
+                response.List.First().Weather.Select(w => new WeatherInfo(w.Id, w.Main, w.Description)).First());
+
             return new Forecast(
                 new City(response.City.Id, response.City.Name, new CountryCode(response.City.Country)), 
-                response.List.Select(ToDayForecast).ToArray());
+                currentWeather,
+                dayForecasts);
         }
 
-        private static DayForecast ToDayForecast(ForecastResponse response)
+        private static DayForecast ToDayForecast(DateTime date, IEnumerable<ForecastResponse> forecastItems)
         {
-            return new DayForecast(ConvertUnixTimeToDateTime(response.UnixTime), response.Main.Temperature, response.Main.Humidity, 
-                response.Weather.Select(weather => new WeatherInfo(weather.Id, weather.Main, weather.Description)).ToArray());
+            var weather = forecastItems.First().Weather.First();
+            
+            return new DayForecast(date, 
+                forecastItems.Average(forecast => forecast.Main.Temperature),
+                forecastItems.Average(forecast => forecast.Main.Humidity),
+                forecastItems.Average(forecast => forecast.Wind.Speed),
+                new WeatherInfo(weather.Id, weather.Main, weather.Description));
         }
 
         private static DateTime ConvertUnixTimeToDateTime(long unixTime)
